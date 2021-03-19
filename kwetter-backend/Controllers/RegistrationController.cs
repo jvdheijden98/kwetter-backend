@@ -91,7 +91,8 @@ namespace kwetter_backend.Controllers
                 return StatusCode(500);
             }
 
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            //return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            return StatusCode(201);
         }
 
         // DELETE: api/registration/5
