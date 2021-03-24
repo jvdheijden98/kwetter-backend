@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "RegistratieService": {
+    "UserService": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "",

@@ -1,5 +1,4 @@
-using kwetter_backend.Logic;
-using kwetter_backend.TempLocalPersistence;
+using UserService.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,8 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UserService.DAL;
+using Microsoft.EntityFrameworkCore;
 
-namespace kwetter_backend
+namespace UserService
 {
     public class Startup
     {
@@ -28,9 +29,15 @@ namespace kwetter_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Database
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DockerUserDb")));
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            #endregion
+
             // Dependency Injection
-            services.AddScoped<AccountStorage>();
-            services.AddScoped<AccountLogic>();
+            services.AddScoped<AuthenticationLogic>();
 
             services.AddControllers();
 
