@@ -9,7 +9,7 @@ trigger:
       - dev
   paths:
     include:
-      - UserServuce
+      - UserService
 
 pool:
   vmImage: 'windows-latest'
