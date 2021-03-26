@@ -37,6 +37,11 @@ stages:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
 
+  - stage: 'Test'
+    displayName: 'Run Tests'
+    jobs:
+    - job: 'Test'
+      steps:
       - task: VSTest@2
         inputs:
           platform: '$(buildPlatform)'
