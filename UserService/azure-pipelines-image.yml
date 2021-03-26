@@ -47,7 +47,7 @@ stages:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
 
-  - stage: 'Image Creation'
+  - stage: 'ImageCreation'
     displayName: 'Create and Store Image'
     jobs: 
     - job: CreateDockerImage
