@@ -11,5 +11,10 @@ namespace UserService.Logic.Tests
     [TestClass()]
     public class AuthenticationLogicTests
     {
+        [TestMethod]
+        public void Succeed()
+        {
+            Assert.IsTrue(true);
+        }
     }
 }
