@@ -46,6 +46,7 @@ stages:
       steps:
       - task: Docker@2
         inputs:
-          repository: 'UserService'
-          command: 'build'
+          containerRegistry: 'dockerhub'
+          repository: 'jtvdheijden/UserService'
+          command: 'buildAndPush'
           Dockerfile: 'DockerfileUserService'
