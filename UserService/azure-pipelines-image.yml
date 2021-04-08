@@ -47,6 +47,6 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerhub'
-          repository: 'jtvdheijden/UserService'
+          repository: 'jtvdheijden/kwetter-backend-userService'
           command: 'buildAndPush'
           Dockerfile: 'DockerfileUserService'
