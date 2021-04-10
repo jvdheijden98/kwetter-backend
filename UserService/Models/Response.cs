@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace UserService.Models
 {
-    public class LoginResponse
+    public class Response
     {
+        public string Status { get; set; }
+        public string Message { get; set; }
+
+        /*
         [JsonPropertyName("username")]
         public string UserName { get; set; }
 
@@ -22,5 +26,6 @@ namespace UserService.Models
 
         [JsonPropertyName("refreshToken")]
         public string RefreshToken { get; set; }
+        */
     }
 }

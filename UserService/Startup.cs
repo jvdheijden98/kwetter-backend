@@ -1,4 +1,3 @@
-using UserService.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,12 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using UserService.DAL;
 using Microsoft.EntityFrameworkCore;
-using UserService.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-
+using UserService.Models;
 
 namespace UserService
 {
@@ -37,34 +35,8 @@ namespace UserService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            #region JWT
-            var jwtTokenConfig = Configuration.GetSection("jwtTokenConfig").Get<JwtTokenConfig>();
-            services.AddSingleton(jwtTokenConfig);
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtTokenConfig.Issuer,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret)),
-                    ValidAudience = jwtTokenConfig.Audience,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(1)
-                };
-            });
 
-            #endregion
-
-            #region Database
+            #region EntityFramework Database
             if (_env.IsProduction())
             {
                 services.AddDbContext<UserDbContext>(options =>
@@ -79,45 +51,40 @@ namespace UserService
             services.AddDatabaseDeveloperPageExceptionFilter();
             #endregion
 
-            #region Identity Services
+            #region AspNetCore Identity
+            services.AddIdentity<Account, IdentityRole>()
+                .AddEntityFrameworkStores<UserDbContext>()
+                .AddDefaultTokenProviders();
+            #endregion
 
-
-            services.Configure<IdentityOptions>(options =>
+            #region Authentication
+            services.AddAuthentication(options =>
             {
-                // TODO: Set values to true
-                // Password settings
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                //options.Password.RequiredLength = 8;
-                //options.Password.RequiredUniqueChars = 1;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            #endregion
 
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=?";
-            });
-
-            services.ConfigureApplicationCookie(options =>
+            // TODO: Enable HTTPS only
+            #region JwtBearer
+            .AddJwtBearer(options =>
             {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-                options.LoginPath = "api/authentication/register";
-                //TODO: Denied Path maken
-                //options.AccessDeniedPath = "" 
-                options.SlidingExpiration = true;
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
             });
             #endregion
 
             // Dependency Injection
-            services.AddScoped<JwtAuthManager>();
-            services.AddScoped<AuthenticationLogic>();
+            //services.AddScoped<AuthenticationLogic>();
 
             services.AddControllers();
 
@@ -147,7 +114,6 @@ namespace UserService
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
