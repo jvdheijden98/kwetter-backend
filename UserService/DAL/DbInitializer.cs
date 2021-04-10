@@ -20,9 +20,9 @@ namespace UserService.DAL
             // Kan met Lists, arrays is beter performance.
             Account[] accounts = new Account[]
             {
-                new Account { Username="ANiceAccount", Password="APassword1" },
-                new Account { Username="BlueBella", Password="BrokenPassword2" },
-                new Account { Username="CC3", Password="Controllingpassword3" }
+                new Account { Username="ANiceAccount", Password="APassword1", Role="Administrator" },
+                new Account { Username="BlueBella", Password="BrokenPassword2", Role="Moderator" },
+                new Account { Username="CC3", Password="Controllingpassword3", Role="User" }
             };
 
             foreach(Account account in accounts)

@@ -15,9 +15,11 @@ namespace UserService.DAL
 
         public DbSet<Account> Accounts { get; set; }
 
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>().ToTable("Accounts");
-        }*/
+            modelBuilder.Entity<Account>()
+                .Property(b => b.Role)
+                .HasDefaultValue("User");
+        }
     }
 }
