@@ -12,22 +12,22 @@ namespace UserService.DAL
         {
             context.Database.EnsureCreated();
 
-            if (context.Accounts.Any())
+            if (context.Users.Any())
             {
                 return;
             }
 
-            // Kan met Lists, arrays is beter performance.
+            // Can be done with lists, arrays have better performance
             Account[] accounts = new Account[]
             {
-                new Account { Username="ANiceAccount", Password="APassword1" },
-                new Account { Username="BlueBella", Password="BrokenPassword2" },
-                new Account { Username="CC3", Password="Controllingpassword3" }
+                new Account { UserName="ANiceAccount", Email="Anice@gmail.com", PasswordHash="AHashedPassword1" },
+                new Account { UserName="BlueBella", Email="BlueBella@gmail.com", PasswordHash="BrokenHashedPassword2" },
+                new Account { UserName="CC3", Email="CamillaCameriere@gmail.com", PasswordHash="ControllingHashedpassword3" }
             };
 
             foreach(Account account in accounts)
             {
-                context.Accounts.Add(account);
+                context.Users.Add(account);
             }
             context.SaveChanges();
         }
