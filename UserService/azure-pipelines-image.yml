@@ -50,3 +50,4 @@ stages:
           repository: 'jtvdheijden/kwetter-backend-userservice'
           command: 'buildAndPush'
           Dockerfile: 'DockerfileUserService'
+          tags: latest
