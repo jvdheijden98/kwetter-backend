@@ -3,14 +3,17 @@ version: '3.9'
 services:
 
   userService:
-    image: kwetter-user-service
+    image: jtvdheijden/kwetter-backend-userservice
     ports: 
       - 5000:5000
-
+    depends_on:
+      - "user-db"
+     
   user-db:
-    image: user-db
+    image: jtvdheijden/kwetter-user-db
     environment:
-        SA_PASSWORD: "Supersecretpassword123"
+        SA_PASSWORD: "Supersecretpassword1234!"
         ACCEPT_EULA: "Y"
+        MSSQL_PID: "Developer"    
     ports:
       - 1433:1433
