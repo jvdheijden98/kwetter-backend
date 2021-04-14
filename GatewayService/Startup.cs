@@ -1,24 +1,21 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Ocelot.Cache.CacheManager;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using UserService.DAL;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
-using UserService.Models;
+using System.Threading.Tasks;
 
-namespace UserService
+namespace GatewayService
 {
     public class Startup
     {
@@ -33,30 +30,9 @@ namespace UserService
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-            #region EntityFramework Database
-            if (_env.IsProduction())
-            {
-                services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DockerUserDb")));
-            } 
-            else
-            {
-                services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DebugUserDb")));
-            }            
-
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            #endregion
-
-            #region AspNetCore Identity
-            services.AddIdentity<Account, IdentityRole>()
-                .AddEntityFrameworkStores<UserDbContext>()
-                .AddDefaultTokenProviders();
-            #endregion
-
             #region Authentication
             services.AddAuthentication(options =>
             {
@@ -83,20 +59,7 @@ namespace UserService
             });
             #endregion
 
-            // Dependency Injection
-            //services.AddScoped<AuthenticationLogic>();
-
-            services.AddControllers();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:3000", "https://localhost:3000")
-                        .AllowAnyHeader(); ;
-                    });
-            });
+            services.AddOcelot().AddCacheManager(settings => settings.WithDictionaryHandle());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,19 +70,17 @@ namespace UserService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseCors(MyAllowSpecificOrigins);
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Hello World!");
+                });
             });
+
+            app.UseOcelot().Wait();
         }
     }
 }

@@ -42,7 +42,7 @@ namespace UserService
                 catch (Exception ex)
                 {
                     ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, " An error occured creating the database.");
+                    logger.LogError(ex, "An error occured creating the database.");
                 }
             }
         }
