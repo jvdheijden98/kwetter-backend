@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserService\UserService.csproj", "{51960758-2AF4-45DC-85CD-894AC82565B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceTests", "UserServiceTests\UserServiceTests.csproj", "{F9F35E0F-A738-4ADF-B23A-853B061E440E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServiceTests", "UserServiceTests\UserServiceTests.csproj", "{F9F35E0F-A738-4ADF-B23A-853B061E440E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KweetService", "KweetService\KweetService.csproj", "{3B8BAFD7-E174-4BF8-A1A8-F998D1E4ADB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService", "GatewayService\GatewayService.csproj", "{48A01D7F-3DCC-4564-9940-7CA944AB2B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{F9F35E0F-A738-4ADF-B23A-853B061E440E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9F35E0F-A738-4ADF-B23A-853B061E440E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9F35E0F-A738-4ADF-B23A-853B061E440E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8BAFD7-E174-4BF8-A1A8-F998D1E4ADB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8BAFD7-E174-4BF8-A1A8-F998D1E4ADB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8BAFD7-E174-4BF8-A1A8-F998D1E4ADB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8BAFD7-E174-4BF8-A1A8-F998D1E4ADB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A01D7F-3DCC-4564-9940-7CA944AB2B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A01D7F-3DCC-4564-9940-7CA944AB2B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A01D7F-3DCC-4564-9940-7CA944AB2B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A01D7F-3DCC-4564-9940-7CA944AB2B3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,10 +2,16 @@ version: '3.9'
 
 services:
 
+  gatewayService:
+    image: jtvdheijden/kwetter-backend-gatewayservice
+    ports:
+      - 5021:5021
+      - 5020:5020
+    
   userService:
     image: jtvdheijden/kwetter-backend-userservice
-    ports: 
-      - 5000:5000
+    #ports: 
+      #- 5000:5000
     depends_on:
       - "user-db"
      
@@ -15,5 +21,5 @@ services:
         SA_PASSWORD: "Supersecretpassword1234!"
         ACCEPT_EULA: "Y"
         MSSQL_PID: "Developer"    
-    ports:
-      - 1433:1433
+    #ports:
+      #- 1433:1433

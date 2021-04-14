@@ -1,0 +1,79 @@
+{
+  "Routes": [
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userService",
+          "Port": "5000"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/authentication/register",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/authentication/register"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userService",
+          "Port": "5000"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/authentication/login",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/authentication/login"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userService",
+          "Port": "5000"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/authentication/register-admin",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/authentication/register-admin"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5021"
+  }
+}
