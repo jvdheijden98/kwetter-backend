@@ -9,7 +9,7 @@ trigger:
       - main
   paths:
     include:
-      - KweetService
+      - GatewayService
 
 pool:
   vmImage: 'windows-latest'
@@ -47,7 +47,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerhub'
-          repository: 'jtvdheijden/kwetter-backend-kweetservice'
+          repository: 'jtvdheijden/kwetter-backend-gatewayservice'
           command: 'buildAndPush'
-          Dockerfile: 'DockerfileKweetService'
+          Dockerfile: 'DockerfileGatewayService'
           tags: latest
