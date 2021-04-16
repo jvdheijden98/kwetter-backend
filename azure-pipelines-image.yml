@@ -49,5 +49,5 @@ stages:
           containerRegistry: 'dockerhub'
           repository: 'jtvdheijden/kwetter-backend-gatewayservice'
           command: 'buildAndPush'
-          Dockerfile: 'DockerFileGatewayService'
+          Dockerfile: 'DockerfileGatewayService'
           tags: latest
