@@ -48,5 +48,6 @@ stages:
         inputs:
           containerRegistry: 'dockerhub'
           repository: 'jtvdheijden/kwetter-backend-kweetservice'
-          command: 'build'
+          command: 'buildAndPush'
           Dockerfile: 'DockerfileKweetService'
+          tags: latest
