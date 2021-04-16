@@ -23,3 +23,19 @@ services:
         MSSQL_PID: "Developer"    
     #ports:
       #- 1433:1433
+      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8090:8090
+
+  kweetService:
+    image: jtvdheijden/kwetter-backend-kweetservice    
+      
+  kweet-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: Supersecretpassword1234!
+      POSTGRES_DB: KweetData
+      
