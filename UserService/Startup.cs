@@ -107,13 +107,12 @@ namespace UserService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
+            app.UseHttpsRedirection();            
 
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

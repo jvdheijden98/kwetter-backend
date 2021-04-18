@@ -71,6 +71,22 @@
       },
       "UpstreamHttpMethod": [ "Post" ],
       "UpstreamPathTemplate": "/api/authentication/register-admin"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/kweet/test",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/kweet/test"
     }
   ],
   "GlobalConfiguration": {
