@@ -11,7 +11,7 @@ namespace KweetService.Models
         public string Username { get; set; }
         public string Message { get; set; }
         public int Likes { get; set; }
-        public int TimeCreated { get; set; }
+        public long TimeCreated { get; set; }
         public int UserID { get; set; }
     }
 }

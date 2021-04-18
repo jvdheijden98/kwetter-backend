@@ -87,6 +87,22 @@
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Get" ],
       "UpstreamPathTemplate": "/api/kweet/test"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/kweet/create",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/kweet/create"
     }
   ],
   "GlobalConfiguration": {
