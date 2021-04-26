@@ -1,4 +1,5 @@
 ﻿using KweetService.DAL.Contexts;
+using KweetService.Messaging;
 using KweetService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -58,7 +59,16 @@ namespace KweetService.Controllers
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }            
+            }
+
+            try
+            {
+                RabbitPublisher.PublishMessage(kweet);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status201Created, "Rabbit FAILED to publish message");
+            }
 
             return StatusCode(StatusCodes.Status201Created);
         }

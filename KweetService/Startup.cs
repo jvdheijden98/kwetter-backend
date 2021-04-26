@@ -27,6 +27,11 @@ namespace KweetService
         {
             Configuration = configuration;
             _env = env;
+            setRabbitHost();
+        }
+        public void setRabbitHost()
+        {
+            Environment.SetEnvironmentVariable("RabbitHost", _env.IsProduction() ? "RabbitMQ" : "localhost");
         }
 
         public IConfiguration Configuration { get; }
