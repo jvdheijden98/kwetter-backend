@@ -38,4 +38,6 @@ services:
     environment:
       POSTGRES_PASSWORD: Supersecretpassword1234!
       POSTGRES_DB: KweetData
+    ports:
+      - 5432:5432
       

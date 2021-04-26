@@ -71,6 +71,70 @@
       },
       "UpstreamHttpMethod": [ "Post" ],
       "UpstreamPathTemplate": "/api/authentication/register-admin"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "kweetService",
+          "Port": "5001"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/kweet/create",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/kweet/create"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "kweetService",
+          "Port": "5001"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/kweet/read",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/kweet/read"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "kweetService",
+          "Port": "5001"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/kweet/update",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/kweet/update"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "kweetService",
+          "Port": "5001"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/kweet/delete",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamPathTemplate": "/api/kweet/delete"
     }
   ],
   "GlobalConfiguration": {
