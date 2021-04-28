@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using KweetService.Models;
+using KwetterShared.Models;
 using RabbitMQ.Client;
 
 namespace KweetService.Messaging

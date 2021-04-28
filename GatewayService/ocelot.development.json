@@ -151,6 +151,22 @@
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Delete" ],
       "UpstreamPathTemplate": "/api/kweet/delete"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/timeline/readlast",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/timeline/readlast"
     }
   ],
   "GlobalConfiguration": {

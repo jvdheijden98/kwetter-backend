@@ -1,4 +1,5 @@
 ﻿using KweetService.Models;
+using KwetterShared.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
