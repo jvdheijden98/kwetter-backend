@@ -36,12 +36,16 @@ namespace TimelineService.Messaging
                     LastKweet = JsonSerializer.Deserialize<Kweet>(message);
 
                     Console.WriteLine(" [x] Received {0}", message);
+                    //channel.BasicAck(ea.DeliveryTag, false);
                 };
                 channel.BasicConsume(queue: "kweets",
                                      autoAck: true,
                                      consumer: consumer);
+                Console.ReadLine();
 
             }
+            //Console.WriteLine("We exiting this mess lol");
+            //Console.ReadLine();
         }
     }
 }

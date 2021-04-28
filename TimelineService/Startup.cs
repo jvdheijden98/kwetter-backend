@@ -20,7 +20,7 @@ namespace TimelineService
         {
             _env = env;
             setRabbitHost();
-            RabbitSubscriber.OpenChannel();
+            Task.Run(() => RabbitSubscriber.OpenChannel());
         }
 
         public void setRabbitHost()
