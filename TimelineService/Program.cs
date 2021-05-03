@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TimelineService.DAL;
 using TimelineService.DAL.Contexts;
+using TimelineService.Messaging;
 
 namespace TimelineService
 {
@@ -28,6 +29,10 @@ namespace TimelineService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureServices(services =>
+                {
+                    services.AddHostedService<RabbitSubscriber>();
                 });
 
         public static void CreateDatabaseIfNeeded(IHost host)

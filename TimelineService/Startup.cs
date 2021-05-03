@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TimelineService.DAL.Contexts;
+using TimelineService.Logic;
 using TimelineService.Messaging;
 
 namespace TimelineService
@@ -24,7 +25,7 @@ namespace TimelineService
             Configuration = configuration;
             _env = env;
             setRabbitHost();
-            Task.Run(() => RabbitSubscriber.OpenChannel());
+            //Task.Run(() => RabbitSubscriber.OpenChannel());
         }
 
         public void setRabbitHost()

@@ -1,4 +1,6 @@
 ﻿using KwetterShared.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -6,14 +8,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using TimelineService.Logic;
 
 namespace TimelineService.Messaging
 {
-    public static class RabbitSubscriber
+    public class RabbitSubscriber : IHostedService
     {
-        public static Kweet LastKweet { get; private set; }
-        public static void OpenChannel()
+        private readonly IServiceScopeFactory _scopeFactory;
+
+        public RabbitSubscriber(IServiceScopeFactory scopeFactory)
+        {
+            _scopeFactory = scopeFactory;
+        }
+
+        public Kweet LastKweet { get; private set; }
+        public void OpenChannel()
         {
             Console.WriteLine("Opening channel...");
             string host = Environment.GetEnvironmentVariable("RabbitHost");
@@ -34,6 +45,7 @@ namespace TimelineService.Messaging
                     string message = Encoding.UTF8.GetString(body);
 
                     LastKweet = JsonSerializer.Deserialize<Kweet>(message);
+                    CreateKweet();
 
                     Console.WriteLine(" [x] Received {0}", message);
                 };
@@ -43,6 +55,27 @@ namespace TimelineService.Messaging
 
                 Console.ReadLine();
             }
+        }
+
+        private void CreateKweet()
+        {
+            using (IServiceScope scope = _scopeFactory.CreateScope())
+            {
+                TimelineLogic logic = scope.ServiceProvider.GetRequiredService<TimelineLogic>();
+                logic.CreateKweet(LastKweet);
+            }
+        }
+
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            OpenChannel();
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Closing?");
+            return Task.CompletedTask;
         }
     }
 }

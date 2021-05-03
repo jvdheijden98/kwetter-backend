@@ -68,7 +68,7 @@ namespace KweetService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status201Created, "Rabbit FAILED to publish message");
+                return StatusCode(StatusCodes.Status201Created, "Rabbit FAILED to publish message"); // Good behaviour would be to cache the message and try again later. User gets what they want, but bhind screens in progress.
             }
 
             return StatusCode(StatusCodes.Status201Created);
