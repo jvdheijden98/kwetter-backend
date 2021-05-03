@@ -45,12 +45,12 @@ namespace KweetService
             if (_env.IsProduction())
             {
                 services.AddDbContext<KweetDBContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DockerUserDb")));
+                options.UseNpgsql(Configuration.GetConnectionString("DockerKweetDb")));
             }
             else
             {
                 services.AddDbContext<KweetDBContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DebugUserDb")));
+                options.UseNpgsql(Configuration.GetConnectionString("DebugKweetDb")));
             }
 
             services.AddDatabaseDeveloperPageExceptionFilter();

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KweetService.DAL.Contexts
+namespace TimelineService.DAL.Contexts
 {
-    public class KweetDBContext : DbContext
+    public class TimelineDBContext : DbContext
     {
-        public KweetDBContext(DbContextOptions<KweetDBContext> options) : base(options)
+        public TimelineDBContext(DbContextOptions<TimelineDBContext> options) : base(options)
         {
         }
 
