@@ -167,6 +167,22 @@
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Get" ],
       "UpstreamPathTemplate": "/api/timeline/readlast"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/timeline/read",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/timeline/read"
     }
   ],
   "GlobalConfiguration": {

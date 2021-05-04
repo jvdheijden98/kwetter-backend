@@ -15,24 +15,10 @@ namespace TimelineService.Controllers
     public class TimelineController : Controller
     {
         private readonly TimelineDBContext _context;
-        private readonly RabbitSubscriber _rabbitSubscriber;
 
-        public TimelineController(TimelineDBContext context, RabbitSubscriber rabbitSubscriber)
+        public TimelineController(TimelineDBContext context)
         {
             _context = context;
-            _rabbitSubscriber = rabbitSubscriber;
-        }
-
-        [HttpGet]
-        [Route("readlast")]
-        public async Task<IActionResult> ReadLastKweet()
-        {
-            Kweet lastKweet = _rabbitSubscriber.LastKweet;
-            if (lastKweet != null)
-            {
-                return Ok(lastKweet);
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong with reading last Kweet");
         }
 
         [HttpGet]
@@ -40,19 +26,18 @@ namespace TimelineService.Controllers
         public async Task<IActionResult> ReadAllKweets()
         {
             try
-            {
-                // TODO: Do outside of function call. Periodically every hour or so.
-                long oldDate = DateTimeOffset.Now.AddDays(-1).ToUnixTimeSeconds();
-                IQueryable<Kweet> dates = _context.Kweets.Where(kweet => kweet.TimeCreated < oldDate);
-                _context.Kweets.RemoveRange(dates);
-                _context.SaveChanges();
+            {                
+                //long oldDate = DateTimeOffset.Now.AddDays(-1).ToUnixTimeSeconds();
+                //IQueryable<Kweet> dates = _context.Kweets.Where(kweet => kweet.TimeCreated < oldDate);
+                //_context.Kweets.RemoveRange(dates);
+                //_context.SaveChanges();
 
                 List<Kweet> kweets = _context.Kweets.ToList();
                 return Ok(kweets);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong reading the timeline");
             }
         }
     }
