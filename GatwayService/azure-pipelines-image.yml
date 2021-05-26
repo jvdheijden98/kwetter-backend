@@ -32,7 +32,12 @@ stages:
           restoreSolution: '**/GatewayService/.csproj'
           feedsToUse: 'select'
           vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
-
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'restore'
+          projects: '$(solution)'
+          feedsToUse: 'select'
+          vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
 
       - task: VSBuild@1
         inputs:
