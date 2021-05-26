@@ -1,3 +1,8 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
 # ASP.NET Core (.NET Framework)
 # Build and test ASP.NET Core projects targeting the full .NET Framework.
 # Add steps that publish symbols, save build artifacts, and more:
@@ -15,7 +20,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/GatewayService/*.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -26,9 +31,12 @@ stages:
     - job: 'Build'
       steps:
       - task: NuGetToolInstaller@1
-      - task: NuGetCommand@2
+      - task: DotNetCoreCLI@2
         inputs:
-          restoreSolution: '$(solution)'
+          command: 'restore'
+          projects: '$(solution)'
+          feedsToUse: 'select'
+          vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
 
       - task: VSBuild@1
         inputs:

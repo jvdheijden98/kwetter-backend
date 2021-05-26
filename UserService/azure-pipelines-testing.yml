@@ -15,7 +15,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/UserService/*.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -26,9 +26,12 @@ stages:
     - job: 'Build'
       steps:
       - task: NuGetToolInstaller@1
-      - task: NuGetCommand@2
+      - task: DotNetCoreCLI@2
         inputs:
-          restoreSolution: '$(solution)'
+          command: 'restore'
+          projects: '$(solution)'
+          feedsToUse: 'select'
+          vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
 
       - task: VSBuild@1
         inputs:
@@ -40,7 +43,7 @@ stages:
   - stage: 'Test'
     displayName: 'Run Tests'
     jobs:
-    - job: 'Test'
+    - job: 'UnitTestJob'
       steps:
       - task: VSTest@2
         inputs:
