@@ -29,13 +29,7 @@ stages:
       - task: NuGetCommand@2
         inputs:
           command: 'restore'
-          restoreSolution: '**/GatewayService/.csproj'
-          feedsToUse: 'select'
-          vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'restore'
-          projects: '$(solution)'
+          restoreSolution: '$(solution)'
           feedsToUse: 'select'
           vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
 
