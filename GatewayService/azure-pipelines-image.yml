@@ -36,22 +36,12 @@ stages:
           command: 'restore'
           projects: '$(solution)'
           feedsToUse: 'select'
-          vstsFeed: '1245df8c-aa35-4b0b-ab52-5ad892df5242'
+          vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
 
       - task: VSBuild@1
         inputs:
           solution: '$(solution)'
           msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-          platform: '$(buildPlatform)'
-          configuration: '$(buildConfiguration)'
-
-  - stage: 'Test'
-    displayName: 'Run Tests'
-    jobs:
-    - job: 'Test'
-      steps:
-      - task: VSTest@2
-        inputs:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
 
@@ -65,6 +55,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerhub'
-          repository: 'GatewayService'
-          command: 'build'
+          repository: 'jtvdheijden/kwetter-backend-gatewayservice'
+          command: 'buildAndPush'
           Dockerfile: 'DockerfileGatewayService'
+          tags: latest
