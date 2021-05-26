@@ -15,7 +15,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/GatewayService/.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -28,7 +28,11 @@ stages:
       - task: NuGetToolInstaller@1
       - task: NuGetCommand@2
         inputs:
-          restoreSolution: '$(solution)'
+          command: 'restore'
+          restoreSolution: '**/GatewayService/.csproj'
+          feedsToUse: 'select'
+          vstsFeed: '185db493-fd6f-4232-ad1e-262464f79a02'
+
 
       - task: VSBuild@1
         inputs:
