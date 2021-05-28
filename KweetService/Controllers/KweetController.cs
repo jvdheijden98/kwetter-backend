@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
 
 namespace KweetService.Controllers
 {
@@ -18,10 +20,23 @@ namespace KweetService.Controllers
     public class KweetController : Controller
     {
         private readonly KweetDBContext _context;
+        private readonly HttpClient _httpClient;
 
         public KweetController(KweetDBContext context)
         {
             _context = context;
+            _httpClient = new HttpClient();
+        }
+
+        public async Task<string> CensorCurses(string kweetMessage)
+        {
+            //string json = Newtonsoft.Json.JsonConvert.SerializeObject(kweetMessage);
+            StringContent content = new StringContent(kweetMessage, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync("https://kwetterfunctions.azurewebsites.net/api/censorcurses", content);
+            string censoredKweetMessage = httpResponseMessage.Content.ReadAsStringAsync().Result;
+
+            return censoredKweetMessage;
         }
 
 
@@ -35,11 +50,14 @@ namespace KweetService.Controllers
                 return BadRequest("Message can't be longer that 144 characters");
             }
 
-            Regex regex = new Regex(@"^\p{L}+$"); // TODO Allow spaces
+            //Regex regex = new Regex(@"^\p{L}+$"); // TODO Allow spaces
+            Regex regex = new Regex(@"^[\p{L}\s\w?!.,@#$%^&*()_+-]+$");
             if (!regex.IsMatch(kweetRequest.Message))
             {
                 return BadRequest("Please provide input that is UTF-8 valid.");
             }
+
+            string censoredKweetMessage = await CensorCurses(kweetRequest.Message);
 
             // Maybe store the ID in claims in the future instead... 
             // Will require a database call upon registering since database creates them.
@@ -47,7 +65,7 @@ namespace KweetService.Controllers
             Kweet kweet = new Kweet
             {
                 Username = username,
-                Message = kweetRequest.Message,
+                Message = censoredKweetMessage,
                 Likes = 0,
                 TimeCreated = DateTimeOffset.Now.ToUnixTimeSeconds()
             };
