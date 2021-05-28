@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
+using System.Web.Helpers;
 
 namespace KweetService.Controllers
 {
@@ -20,21 +21,36 @@ namespace KweetService.Controllers
     public class KweetController : Controller
     {
         private readonly KweetDBContext _context;
-        private readonly HttpClient _httpClient;
+        
 
         public KweetController(KweetDBContext context)
         {
             _context = context;
-            _httpClient = new HttpClient();
         }
 
         public async Task<string> CensorCurses(string kweetMessage)
         {
-            //string json = Newtonsoft.Json.JsonConvert.SerializeObject(kweetMessage);
-            StringContent content = new StringContent(kweetMessage, Encoding.UTF8, "application/json");
+            // TODO werk met httprequestdata, FaaS snapt t anders niet
+            HttpClient _httpClient = new HttpClient(); ;
 
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync("https://kwetterfunctions.azurewebsites.net/api/censorcurses", content);
-            string censoredKweetMessage = httpResponseMessage.Content.ReadAsStringAsync().Result;
+            // New Request Message
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://kwetterfunctions.azurewebsites.net/api/censorcurses");
+            //HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:7071/api/CensorCurses");        
+
+            // Add body
+            requestMessage.Content = new StringContent(kweetMessage, Encoding.UTF8, "application/json");
+
+            // Send request
+            HttpResponseMessage responseMessage = await _httpClient.SendAsync(requestMessage);
+
+            string censoredKweetMessage = await responseMessage.Content.ReadAsStringAsync();
+
+            //string responseJson = await responseMessage.Content.ReadAsStringAsync();
+            //dynamic responseObject = System.Web.Helpers.Json.Decode(responseJson);
+            //string censoredKweetMessage = responseObject.Value;
+            //string censoredKweetMessage = responseMessage.Headers.GetValues("Value").FirstOrDefault();
+
+            //Console.WriteLine("Pre method pre return: " + censoredKweetMessage);
 
             return censoredKweetMessage;
         }
@@ -58,6 +74,7 @@ namespace KweetService.Controllers
             }
 
             string censoredKweetMessage = await CensorCurses(kweetRequest.Message);
+            //Console.WriteLine("Post method: " + censoredKweetMessage);
 
             // Maybe store the ID in claims in the future instead... 
             // Will require a database call upon registering since database creates them.
