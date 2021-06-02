@@ -22,15 +22,14 @@ namespace KweetService.Controllers
     {
         private readonly KweetDBContext _context;
         
-
+        // TODO Implement Responses
         public KweetController(KweetDBContext context)
         {
             _context = context;
         }
 
         public async Task<string> CensorCurses(string kweetMessage)
-        {
-            // TODO werk met httprequestdata, FaaS snapt t anders niet
+        {            
             HttpClient _httpClient = new HttpClient(); ;
 
             // New Request Message
@@ -44,14 +43,6 @@ namespace KweetService.Controllers
             HttpResponseMessage responseMessage = await _httpClient.SendAsync(requestMessage);
 
             string censoredKweetMessage = await responseMessage.Content.ReadAsStringAsync();
-
-            //string responseJson = await responseMessage.Content.ReadAsStringAsync();
-            //dynamic responseObject = System.Web.Helpers.Json.Decode(responseJson);
-            //string censoredKweetMessage = responseObject.Value;
-            //string censoredKweetMessage = responseMessage.Headers.GetValues("Value").FirstOrDefault();
-
-            //Console.WriteLine("Pre method pre return: " + censoredKweetMessage);
-
             return censoredKweetMessage;
         }
 
@@ -61,7 +52,8 @@ namespace KweetService.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateKweet([FromBody] KweetRequest kweetRequest)
         {
-            if(kweetRequest.Message.Length > 144)
+            Response response;
+            if (kweetRequest.Message.Length > 144)
             {
                 return BadRequest("Message can't be longer that 144 characters");
             }
@@ -106,7 +98,8 @@ namespace KweetService.Controllers
                 return StatusCode(StatusCodes.Status201Created, "Rabbit FAILED to publish message"); // Good behaviour would be to cache the message and try again later. User gets what they want, but bhind screens in progress.
             }
 
-            return StatusCode(StatusCodes.Status201Created);
+            response = new Response { Status = "Succes", Message = "Kweet created succesfully." };
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         // Test method - Delete when timeline service is setup (and then make a longterm one here)

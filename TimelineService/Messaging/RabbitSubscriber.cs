@@ -45,14 +45,14 @@ namespace TimelineService.Messaging
                                      arguments: null);
 
                 EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
+                consumer.Received += async (model, ea) =>
                 {
                     byte[] body = ea.Body.ToArray();
                     string message = Encoding.UTF8.GetString(body);
 
                     LastKweet = JsonSerializer.Deserialize<Kweet>(message);
 
-                    CreateKweet();
+                    await CreateKweet();
 
                     Console.WriteLine(" [x] Received {0}", message);
                 };

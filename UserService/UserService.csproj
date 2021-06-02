@@ -30,4 +30,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KwetterShared\KwetterShared.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using UserService.Authentication;
+using KwetterShared.Models;
 
 namespace UserService.Controllers
 {
