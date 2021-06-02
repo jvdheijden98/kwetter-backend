@@ -33,6 +33,7 @@ namespace TimelineService.Controllers
                 //_context.SaveChanges();
 
                 List<Kweet> kweets = _context.Kweets.ToList();
+                kweets.Reverse();
                 return Ok(kweets);
             }
             catch (Exception e)
