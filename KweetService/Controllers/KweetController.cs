@@ -52,6 +52,7 @@ namespace KweetService.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateKweet([FromBody] KweetRequest kweetRequest)
         {
+            // TODO Check for fake token with Something like User.Identity.IsAuthenticated
             Response response;
             if (kweetRequest.Message.Length > 144)
             {
