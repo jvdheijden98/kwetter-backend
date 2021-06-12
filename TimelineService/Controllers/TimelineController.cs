@@ -26,11 +26,7 @@ namespace TimelineService.Controllers
         public async Task<IActionResult> ReadAllKweets()
         {
             try
-            {                
-                //long oldDate = DateTimeOffset.Now.AddDays(-1).ToUnixTimeSeconds();
-                //IQueryable<Kweet> dates = _context.Kweets.Where(kweet => kweet.TimeCreated < oldDate);
-                //_context.Kweets.RemoveRange(dates);
-                //_context.SaveChanges();
+            {
 
                 List<Kweet> kweets = _context.Kweets.ToList();
                 kweets.Reverse();
