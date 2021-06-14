@@ -28,6 +28,12 @@ namespace UserService
         {
             Configuration = configuration;
             _env = env;
+            SetRabbitHost();
+        }
+
+        public void SetRabbitHost()
+        {
+            Environment.SetEnvironmentVariable("RabbitHost", _env.IsProduction() ? "RabbitMQ" : "localhost");
         }
 
         public IConfiguration Configuration { get; }

@@ -79,6 +79,30 @@
       },
       "DownstreamHostAndPorts": [
         {
+          "Host": "userService",
+          "Port": "5000"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/authentication/delete",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamPathTemplate": "/api/authentication/delete"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
           "Host": "kweetService",
           "Port": "5001"
         }

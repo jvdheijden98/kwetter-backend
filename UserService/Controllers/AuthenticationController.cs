@@ -17,6 +17,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using UserService.Authentication;
 using KwetterShared.Models;
+using UserService.Messaging;
 
 namespace UserService.Controllers
 {
@@ -62,6 +63,20 @@ namespace UserService.Controllers
             if (!result.Succeeded)
             {
                 response = new Response { Status = "Error", Message = "User creation failed! Check your details and try again." };
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+
+            try
+            {
+                Account accountForId = _userManager.FindByNameAsync(account.UserName).Result;
+                //Console.WriteLine("Id the usermanager gaveback: " + accountForId.Id); 
+
+                // ID is correct. KweetDB heeft null. Iets gaat mis met messaging?
+                RabbitPublisher.PublishMessage(accountForId.Id, account.UserName);
+            }
+            catch (Exception e)
+            {
+                response = new Response { Status = "Error", Message = "Your request is being processed. This might take a while." }; // TODO: Cache the profile aanmaak request
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
@@ -158,6 +173,32 @@ namespace UserService.Controllers
                 expiration = jwtToken.ValidTo
             };
             return Ok(tokenResponse);
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("delete")]
+        public async Task<IActionResult> Delete()
+        {
+            Response response;
+
+            string username = User.Identity.Name;
+            Account account = await _userManager.FindByNameAsync(username);
+            string userID = account.Id;
+
+            try
+            {
+                RabbitPublisher.PublishMessageToExchange(username);
+
+            }
+            catch (Exception e)
+            {
+                response = new Response { Status = "Error", Message = "Your request is being processed. This might take a while." };
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+
+            response = new Response { Status = "Succes", Message = "User deletion is being processed." };
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         [Authorize]

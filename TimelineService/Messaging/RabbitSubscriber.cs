@@ -77,14 +77,69 @@ namespace TimelineService.Messaging
                 context.Kweets.RemoveRange(dates);
 
                 context.Add(LastKweet);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
+        }
+
+        public void OpenDeletionChannel()
+        {
+            Console.WriteLine("Opening channel...");
+            string host = Environment.GetEnvironmentVariable("RabbitHost");
+            var factory = new ConnectionFactory() { HostName = host };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.ExchangeDeclare(exchange: "deletion", type: ExchangeType.Fanout);
+
+                string queueName = channel.QueueDeclare().QueueName;
+                channel.QueueBind(queue: queueName,
+                                  exchange: "deletion",
+                                  routingKey: "");
+
+                EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
+                consumer.Received += async (model, ea) =>
+                {
+                    byte[] body = ea.Body.ToArray();
+                    string message = Encoding.UTF8.GetString(body);
+
+                    //string username = JsonSerializer.Deserialize<string>(message);
+                    string username = message;
+
+                    await DeleteUsernameFromKweets(username);
+
+                    Console.WriteLine(" [x] Received {0}", message);
+                };
+                channel.BasicConsume(queue: queueName,
+                                     autoAck: true,
+                                     consumer: consumer);
+
+                Console.ReadLine();
+            }
+        }
+
+        private async Task DeleteUsernameFromKweets(string username)
+        {
+            using (IServiceScope scope = _scopeFactory.CreateScope())
+            {
+                TimelineDBContext context = scope.ServiceProvider.GetRequiredService<TimelineDBContext>();
+
+                IQueryable<Kweet> kweets = context.Kweets.Where(kweet => kweet.Username == username);
+                foreach (Kweet kweet in kweets)
+                {
+                    kweet.Username = "[Deleted]";
+                }
+                context.UpdateRange(kweets);
+                await context.SaveChangesAsync();
+            }
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             OpenChannel();
+
+            //TODO figure out how to merge exchange and seperate channel into one "console.readkey"
+            // OpenDeletionChannel();
             return Task.CompletedTask;
         }
 
