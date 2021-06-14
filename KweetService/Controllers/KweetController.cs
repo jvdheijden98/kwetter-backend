@@ -4,11 +4,15 @@ using KweetService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using KwetterShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
+using System.Web.Helpers;
 
 namespace KweetService.Controllers
 {
@@ -17,10 +21,29 @@ namespace KweetService.Controllers
     public class KweetController : Controller
     {
         private readonly KweetDBContext _context;
-
+        
+        // TODO Implement Responses
         public KweetController(KweetDBContext context)
         {
             _context = context;
+        }
+
+        public async Task<string> CensorCurses(string kweetMessage)
+        {            
+            HttpClient _httpClient = new HttpClient(); ;
+
+            // New Request Message
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://kwetterfunctions.azurewebsites.net/api/censorcurses");
+            //HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:7071/api/CensorCurses");        
+
+            // Add body
+            requestMessage.Content = new StringContent(kweetMessage, Encoding.UTF8, "application/json");
+
+            // Send request
+            HttpResponseMessage responseMessage = await _httpClient.SendAsync(requestMessage);
+
+            string censoredKweetMessage = await responseMessage.Content.ReadAsStringAsync();
+            return censoredKweetMessage;
         }
 
 
@@ -29,16 +52,22 @@ namespace KweetService.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateKweet([FromBody] KweetRequest kweetRequest)
         {
-            if(kweetRequest.Message.Length > 144)
+            // TODO Check for fake token with Something like User.Identity.IsAuthenticated
+            Response response;
+            if (kweetRequest.Message.Length > 144)
             {
                 return BadRequest("Message can't be longer that 144 characters");
             }
 
-            Regex regex = new Regex(@"^\p{L}+$"); // TODO Allow spaces
+            //Regex regex = new Regex(@"^\p{L}+$"); // TODO Allow spaces
+            Regex regex = new Regex(@"^[\p{L}\s\w?!.,@#$%^&*()_+-]+$");
             if (!regex.IsMatch(kweetRequest.Message))
             {
                 return BadRequest("Please provide input that is UTF-8 valid.");
             }
+
+            string censoredKweetMessage = await CensorCurses(kweetRequest.Message);
+            //Console.WriteLine("Post method: " + censoredKweetMessage);
 
             // Maybe store the ID in claims in the future instead... 
             // Will require a database call upon registering since database creates them.
@@ -46,7 +75,7 @@ namespace KweetService.Controllers
             Kweet kweet = new Kweet
             {
                 Username = username,
-                Message = kweetRequest.Message,
+                Message = censoredKweetMessage,
                 Likes = 0,
                 TimeCreated = DateTimeOffset.Now.ToUnixTimeSeconds()
             };
@@ -67,10 +96,11 @@ namespace KweetService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status201Created, "Rabbit FAILED to publish message");
+                return StatusCode(StatusCodes.Status201Created, "Rabbit FAILED to publish message"); // Good behaviour would be to cache the message and try again later. User gets what they want, but bhind screens in progress.
             }
 
-            return StatusCode(StatusCodes.Status201Created);
+            response = new Response { Status = "Succes", Message = "Kweet created succesfully." };
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         // Test method - Delete when timeline service is setup (and then make a longterm one here)

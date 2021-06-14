@@ -1,4 +1,5 @@
 using KweetService.DAL.Contexts;
+using KweetService.Messaging;
 using KweetService.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,10 @@ namespace KweetService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureServices(services =>
+                {
+                    services.AddHostedService<RabbitSubscriber>();
                 });
 
         public static void CreateDatabaseIfNeeded(IHost host)

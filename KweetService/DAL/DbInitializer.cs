@@ -1,4 +1,5 @@
 ﻿using KweetService.DAL.Contexts;
+using KwetterShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

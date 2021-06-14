@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using UserService.DAL;
+using UserService.Messaging;
 
 namespace UserService
 {
@@ -27,6 +28,10 @@ namespace UserService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureServices(services =>
+                {
+                    services.AddHostedService<RabbitSubscriber>();
                 });
 
         public static void CreateDatabaseIfNeeded(IHost host)

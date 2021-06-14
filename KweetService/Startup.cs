@@ -29,6 +29,7 @@ namespace KweetService
             _env = env;
             setRabbitHost();
         }
+
         public void setRabbitHost()
         {
             Environment.SetEnvironmentVariable("RabbitHost", _env.IsProduction() ? "RabbitMQ" : "localhost");
@@ -44,12 +45,12 @@ namespace KweetService
             if (_env.IsProduction())
             {
                 services.AddDbContext<KweetDBContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DockerUserDb")));
+                options.UseNpgsql(Configuration.GetConnectionString("DockerKweetDb")));
             }
             else
             {
                 services.AddDbContext<KweetDBContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DebugUserDb")));
+                options.UseNpgsql(Configuration.GetConnectionString("DebugKweetDb")));
             }
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -84,6 +85,16 @@ namespace KweetService
             #endregion
 
             services.AddScoped<KweetDBContext>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                        .AllowAnyHeader();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +110,8 @@ namespace KweetService
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
