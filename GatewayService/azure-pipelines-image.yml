@@ -14,7 +14,7 @@ trigger:
       - main
   paths:
     include:
-      - GatewayService
+    - GatewayService
 
 pool:
   vmImage: 'windows-latest'
@@ -59,3 +59,10 @@ stages:
           command: 'buildAndPush'
           Dockerfile: 'DockerfileGatewayService'
           tags: latest
+          
+      - task: PublishBuildArtifacts@1
+        inputs:
+         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+         ArtifactName: 'drop'
+         publishLocation: 'Container'
+
