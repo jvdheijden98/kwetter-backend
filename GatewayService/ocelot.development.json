@@ -207,6 +207,22 @@
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Get" ],
       "UpstreamPathTemplate": "/api/timeline/read"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenthicationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profileService",
+          "Port": "9091"
+        }
+      ],
+      "DownstreamPathTemplate": "/api/profile/read",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/profile/read"
     }
   ],
   "GlobalConfiguration": {

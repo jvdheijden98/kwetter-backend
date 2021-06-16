@@ -6,6 +6,7 @@ EXPOSE 5001
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
+COPY ["KwetterShared/KwetterShared.csproj", "KwetterShared/"]
 COPY ["KweetService/KweetService.csproj", "KweetService/"]
 RUN dotnet restore "KweetService/KweetService.csproj"
 COPY . .
