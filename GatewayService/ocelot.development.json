@@ -215,7 +215,7 @@
       },
       "DownstreamHostAndPorts": [
         {
-          "Host": "profileService",
+          "Host": "localhost",
           "Port": "9091"
         }
       ],

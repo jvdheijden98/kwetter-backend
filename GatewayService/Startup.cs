@@ -67,6 +67,7 @@ namespace GatewayService
                     builder =>
                     {
                         builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
                         .AllowAnyHeader();
                     });
             });
