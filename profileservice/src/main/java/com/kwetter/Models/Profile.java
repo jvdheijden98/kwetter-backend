@@ -1,11 +1,7 @@
 package com.kwetter.Models;
 
 import javax.persistence.Cacheable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.transaction.Transactional;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;

@@ -2,9 +2,6 @@ package com.kwetter.Messaging;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kwetter.Models.Profile;
@@ -13,7 +10,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
-import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 import lombok.Getter;
 import lombok.Setter;
