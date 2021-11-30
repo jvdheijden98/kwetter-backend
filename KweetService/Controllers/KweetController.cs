@@ -33,8 +33,8 @@ namespace KweetService.Controllers
             HttpClient _httpClient = new HttpClient(); ;
 
             // New Request Message
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://kwetterfunctions.azurewebsites.net/api/censorcurses");
-            //HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:7071/api/CensorCurses");        
+            //HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://kwetterfunctions.azurewebsites.net/api/censorcurses");
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:7071/api/CensorCurses");        
 
             // Add body
             requestMessage.Content = new StringContent(kweetMessage, Encoding.UTF8, "application/json");
